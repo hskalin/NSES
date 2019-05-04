@@ -46,15 +46,23 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define WIDTH 100
-#define HEIGHT 30
-#define PLANT_ENERGY 80
+
+#define WIDTH           100
+#define HEIGHT          30
+#define PLANT_ENERGY    80
+#define REP_ENERGY      200         //energy required for reproduction
 
 using namespace std;
 
 int plants[HEIGHT][WIDTH];          //this contains the positions of the plants
 int jungle[4] = {45, 10, 10, 10};   //this defines the jungle area
 //int cntr = 0;                       //counter to keep track of plants
+
+
+
+
+
+//PLANT RELATED FUNCTIONS
 
 void randomPlant (int left, int top, int width, int height){
     srand(time(0));
@@ -68,11 +76,75 @@ void growPlant () {
     randomPlant(0, 0, WIDTH, HEIGHT);                           //grows plant elsewhere
 }
 
+
+
+
+
+
+// ANIMAL RELTED FUNCTIONS
+
 class animal{
 public:
     int x, y, dir, energy;          //dir is the direction currently facing
     int gene[8];
+    void moveAnimal ();
+    void eatAnimal ();
+    void turnAnimal ();
+    animal();                       //default constructor
+    animal(animal &a);              //copy constructor
 };
+
+animal::animal () {
+    x = WIDTH/2;
+    y = HEIGHT/2;
+    dir = 0;
+    energy = 1000;
+    
+    srand(time(0));
+    
+    for(int i=0; i<8; i++){         //randomly allocates the genes
+        gene[i]=rand()%10;
+    }
+}
+
+animal::animal (animal &a) {
+    x = a.x;                        //copies stuff
+    y = a.y;
+    dir = a.dir;
+    
+    energy = a.energy / 2;          //half energy to parent and child
+    a.energy = a.energy / 2;
+    
+    for(int i=0; i<8; i++){         
+        gene[i]=a.gene[i];
+    }
+    
+    int geneChng, genePos;
+    
+    srand(time(0));                 //randomly chooses gene and in(de)crements by 1
+    genePos = rand() % 8;
+    geneChng = rand()%3 - 1;
+    
+    gene[genePos] += (geneChng > 1) ? (geneChng) : (1);     //cant be negative
+}
+
+void animal::turnAnimal () {
+    srand(time(0));
+    int sum=0, num;
+    
+    for (int i=0; i<8; i++){
+        sum += gene[i];
+    }
+    
+    num = rand()%sum + 1;
+    for (int i=0; i<8; i++){
+        num = num - gene[i];
+        if (num <= 0){
+            dir = i;
+            break;
+        }
+    }
+}
 
 void animal::moveAnimal () {
     if (dir > 1 && dir < 5) x = (x + 1)%WIDTH;
@@ -83,15 +155,24 @@ void animal::moveAnimal () {
     energy--;
 }
 
+void animal::eatAnimal () {
+    if(plants[y][x] == 1){
+        energy = energy + PLANT_ENERGY;
+        plants[y][x] = 0;
+    }
+}
+
+
+
+//WORLD RELATED FUNCTIONS
+
 
 int main(){
-    srand(time(0));
+
+    animal p1;
     
-    /*animal a1={WIDTH/2, HEIGHT/2, 0, 1000};
+    cout<<p1.energy;
     
-    for(int i=0; i<8; i++){
-        a1.gene[i]=rand()%10;
-    }*/
-    
+    //cout<<a.gene[1];
     return 0;
 }
