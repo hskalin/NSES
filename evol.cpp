@@ -40,11 +40,16 @@
                     6   5   4
                     
         each number corresponds to the direction animal is facing
+        
+        
+        problems :
+        -why the segmentation fault core dumped ?
 */
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 
 #define WIDTH           100
@@ -61,11 +66,10 @@ int jungle[4] = {45, 10, 10, 10};   //this defines the jungle area
 
 
 
-
 //PLANT RELATED FUNCTIONS
 
 void randomPlant (int left, int top, int width, int height){
-    srand(time(0));
+     
     
     //this thing marks the pos. of plant as 1 in the plants array
     plants[top + (rand() % height)][left + (rand() % width)] = 1;
@@ -90,24 +94,27 @@ public:
     void moveAnimal ();
     void eatAnimal ();
     void turnAnimal ();
+    void repAnimal (animal &a);
+    void geneDisplay ();
     animal();                       //default constructor
-    animal(animal &a);              //copy constructor
+    //animal(animal &a);              //copy constructor
 };
 
 animal::animal () {
     x = WIDTH/2;
     y = HEIGHT/2;
+    
     dir = 0;
     energy = 1000;
     
-    srand(time(0));
+     
     
     for(int i=0; i<8; i++){         //randomly allocates the genes
         gene[i]=rand()%10;
     }
 }
 
-animal::animal (animal &a) {
+void animal::repAnimal (animal &a) {
     x = a.x;                        //copies stuff
     y = a.y;
     dir = a.dir;
@@ -121,15 +128,16 @@ animal::animal (animal &a) {
     
     int geneChng, genePos;
     
-    srand(time(0));                 //randomly chooses gene and in(de)crements by 1
+                      //randomly chooses gene and in(de)crements by 1
     genePos = rand() % 8;
-    geneChng = rand()%3 - 1;
+    geneChng = (rand() % 3) - 1;
     
     gene[genePos] += (geneChng > 1) ? (geneChng) : (1);     //cant be negative
 }
 
+
 void animal::turnAnimal () {
-    srand(time(0));
+     
     int sum=0, num;
     
     for (int i=0; i<8; i++){
@@ -165,14 +173,78 @@ void animal::eatAnimal () {
 
 
 //WORLD RELATED FUNCTIONS
+vector<animal> animals;                 //make a vector animal
+
+void updateWorld(){
+    int size;                                   //i do not know why i did this
+    for(int j=0; j < animals.size(); j++){
+     
+        int i;
+    size=animals.size();
+    for(i=0; i<size; i++) {
+        if (animals[i].energy <= 0) {
+            animals.erase(animals.begin() + i);
+            break;
+        }
+    }
+    
+        if(i==animals.size()) break;
+    }    
+    size = animals.size();
+    
+    for(int i=0; i<size; i++){
+        animals[i].turnAnimal();
+        animals[i].moveAnimal();
+        animals[i].eatAnimal();
+        
+        if(animals[i].energy >= REP_ENERGY){
+            animals.emplace_back(animal());
+            animals[animals.size()-1].repAnimal(animals[i]);
+        }
+    }
+            
+    growPlant();
+}
+    
+
+
+//UI related functions
+void animal::geneDisplay() {
+    cout<<"GENE : ";
+    for (int i=0; i<8; i++) cout<<gene[i]<<" ";
+    cout<<endl;
+}
 
 
 int main(){
-
-    animal p1;
+    srand(time(0));
+    //vector<animal>::iterator j;
     
-    cout<<p1.energy;
     
-    //cout<<a.gene[1];
+    animals.emplace_back(animal());         //the initial animal
+    
+    /* animals[0].geneDisplay();
+    
+    for(int i=0; i<5; i++){
+         animals.emplace_back(animal());
+         animals[i+1].repAnimal(animals[i]);
+         animals[i+1].geneDisplay();
+    }
+    
+    cout<<animals.size()<<endl;
+    
+    animals.erase(animals.begin() + 2);
+    
+    
+    for(int i=0; i<animals.size(); i++){
+         animals[i].geneDisplay();
+    }*/
+    
+    for(int i=0; i<1000; i++){
+        cout<<animals.size()<<endl;
+        updateWorld();
+    }
+    
     return 0;
+    
 }
