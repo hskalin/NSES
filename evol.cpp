@@ -61,7 +61,7 @@ using namespace std;
 
 int plants[HEIGHT][WIDTH];          //this contains the positions of the plants
 int jungle[4] = {45, 10, 10, 10};   //this defines the jungle area
-//int cntr = 0;                       //counter to keep track of plants
+
 
 
 
@@ -69,16 +69,22 @@ int jungle[4] = {45, 10, 10, 10};   //this defines the jungle area
 //PLANT RELATED FUNCTIONS
 
 void randomPlant (int left, int top, int width, int height){
-     
+    int x,y;
+    x = left + (rand()%width);
+    y = top + (rand()%height);
     
     //this thing marks the pos. of plant as 1 in the plants array
-    plants[top + (rand() % height)][left + (rand() % width)] = 1;
+    plants[y][x] = 1;
 }
 
 void growPlant () {
     randomPlant(jungle[0], jungle[1], jungle[2], jungle[3]);    //grows plant in jungle
     randomPlant(0, 0, WIDTH, HEIGHT);                           //grows plant elsewhere
+
+    //randomPlant(0, 0, WIDTH, HEIGHT);
+    //randomPlant(0, 0, WIDTH, HEIGHT);
 }
+
 
 
 
@@ -154,11 +160,17 @@ void animal::turnAnimal () {
     }
 }
 
+int mod(int a){
+    if(a>=0) return a;
+    else if(a<0) return (-a);
+}
+
 void animal::moveAnimal () {
-    if (dir > 1 && dir < 5) x = (x + 1)%WIDTH;
-    if (dir==0 || dir==7 || dir==6) x = (x - 1)%WIDTH;
-    if (dir > 3 && dir < 7) y = (y + 1)%HEIGHT;
-    if (dir==0 || dir==1 || dir==2) y = (y - 1)%HEIGHT;
+    if (dir > 1 && dir < 5)                 x = mod((x + 1)%WIDTH);     //this thing caused a lot of trouble
+    else if (dir==0 || dir==7 || dir==6)    x = mod((x - 1)%WIDTH);
+    
+    if (dir > 3 && dir < 7)                 y = mod((y + 1)%HEIGHT);
+    else if (dir==0 || dir==1 || dir==2)    y = mod((y - 1)%HEIGHT);
     
     energy--;
 }
@@ -177,19 +189,21 @@ vector<animal> animals;                 //make a vector animal
 
 void updateWorld(){
     int size;                                   //i do not know why i did this
+    
+    
     for(auto i=animals.begin(); i != animals.end(); ++i) {
         if ((i->energy) <= 0) {
             animals.erase(i);
             i--;
         }
-    } 
+    }
+    
     size = animals.size();
     
     for(int i=0; i<size; i++){
         animals[i].turnAnimal();
         animals[i].moveAnimal();
         animals[i].eatAnimal();
-        
         if(animals[i].energy >= REP_ENERGY){
             animals.emplace_back(animal());
             animals[animals.size()-1].repAnimal(animals[i]);
@@ -197,6 +211,7 @@ void updateWorld(){
     }
             
     growPlant();
+    
 }
     
 
@@ -211,9 +226,8 @@ void animal::geneDisplay() {
 
 int main(){
     srand(time(0));
-    //vector<animal>::iterator j;
     
-    
+    animals.reserve(500);
     animals.emplace_back(animal());         //the initial animal
     
     /* animals[0].geneDisplay();
@@ -237,6 +251,8 @@ int main(){
         cout<<animals.size()<<endl;
         updateWorld();
     }
+    
+    cout<<"test";
     
     return 0;
     
