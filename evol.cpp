@@ -177,19 +177,12 @@ vector<animal> animals;                 //make a vector animal
 
 void updateWorld(){
     int size;                                   //i do not know why i did this
-    for(int j=0; j < animals.size(); j++){
-     
-        int i;
-    size=animals.size();
-    for(i=0; i<size; i++) {
-        if (animals[i].energy <= 0) {
-            animals.erase(animals.begin() + i);
-            break;
+    for(auto i=animals.begin(); i != animals.end(); ++i) {
+        if ((i->energy) <= 0) {
+            animals.erase(i);
+            i--;
         }
-    }
-    
-        if(i==animals.size()) break;
-    }    
+    } 
     size = animals.size();
     
     for(int i=0; i<size; i++){
