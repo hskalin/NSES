@@ -115,7 +115,7 @@ animal::animal () {
     
      
     
-    for(int i=0; i<8; i++){         //randomly allocates the genes
+    for(int i=0; i<8; i++){         //randomly allocates the genes      //may cause difficulty in deciding reference (initial) traits.  
         gene[i]=rand()%10;
     }
 }
