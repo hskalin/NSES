@@ -29,7 +29,7 @@
          
         -the middle jungle has more dense vegetation than the rest of the world
         -currently the animals are represented by 'O' and plants by '#'
-        -the world is contnuous. if animal crosses boundry, it willl appear on the orther side
+        -the world is continuous. If animal crosses boundary, it will appear on the other side.
         
         the direction coding of an animal :
                     
