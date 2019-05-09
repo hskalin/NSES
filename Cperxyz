@@ -39,7 +39,7 @@
                     
                     6   5   4
                     
-        each number corresponds to the direction animal is facing
+        each number corresponds to the direction animal is facing. Coordinate system relative to animal.
         
         
         problems :
