@@ -50,6 +50,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
+#include <math.h>
 
 
 #define WIDTH           100
@@ -95,7 +96,7 @@ void growPlant () {
 
 class animal{
 public:
-    int x, y, dir, energy;          //dir is the direction currently facing
+    int x, y, dir, energy, age, speed;      //dir is the direction currently facing
     int gene[8];
     void moveAnimal ();
     void eatAnimal ();
@@ -109,11 +110,12 @@ public:
 animal::animal () {
     x = WIDTH/2;
     y = HEIGHT/2;
+    age = 0;
     
     dir = 0;
     energy = 1000;
     
-     
+    speed = rand()%4 + 1; 
     
     for(int i=0; i<8; i++){         //randomly allocates the genes      //may cause difficulty in deciding reference (initial) traits.  
         gene[i]=rand()%10;
@@ -138,8 +140,10 @@ void animal::repAnimal (animal &a) {
     genePos = rand() % 8;
     geneChng = (rand() % 3) - 1;
     
-    gene[genePos] += (geneChng > 1) ? (geneChng) : (1);     //cant be negative
+    gene[genePos] = abs(gene[genePos] + geneChng);     //cant be negative
+    speed = abs(a.speed + geneChng);
 }
+
 
 
 void animal::turnAnimal () {
@@ -166,13 +170,13 @@ int mod(int a){
 }
 
 void animal::moveAnimal () {
-    if (dir > 1 && dir < 5)                 x = mod((x + 1)%WIDTH);     //this thing caused a lot of trouble
-    else if (dir==0 || dir==7 || dir==6)    x = mod((x - 1)%WIDTH);
+    if (dir > 1 && dir < 5)                 x = mod((x + speed)%WIDTH);     //this thing caused a lot of trouble
+    else if (dir==0 || dir==7 || dir==6)    x = mod((x - speed)%WIDTH);
     
-    if (dir > 3 && dir < 7)                 y = mod((y + 1)%HEIGHT);
-    else if (dir==0 || dir==1 || dir==2)    y = mod((y - 1)%HEIGHT);
+    if (dir > 3 && dir < 7)                 y = mod((y + speed)%HEIGHT);
+    else if (dir==0 || dir==1 || dir==2)    y = mod((y - speed)%HEIGHT);
     
-    energy--;
+    energy = energy - speed*speed;
 }
 
 void animal::eatAnimal () {
@@ -204,6 +208,7 @@ void updateWorld(){
         animals[i].turnAnimal();
         animals[i].moveAnimal();
         animals[i].eatAnimal();
+        animals[i].age++;
         if(animals[i].energy >= REP_ENERGY){
             animals.emplace_back(animal());
             animals[animals.size()-1].repAnimal(animals[i]);
