@@ -164,17 +164,14 @@ void animal::turnAnimal () {
     }
 }
 
-int mod(int a){
-    if(a>=0) return a;
-    else if(a<0) return (-a);
 }
 
 void animal::moveAnimal () {
-    if (dir > 1 && dir < 5)                 x = mod((x + speed)%WIDTH);     //this thing caused a lot of trouble
-    else if (dir==0 || dir==7 || dir==6)    x = mod((x - speed)%WIDTH);
+    if (dir > 1 && dir < 5)                 x = abs((x + speed)%WIDTH);     //this thing caused a lot of trouble
+    else if (dir==0 || dir==7 || dir==6)    x = abs((x - speed)%WIDTH);
     
-    if (dir > 3 && dir < 7)                 y = mod((y + speed)%HEIGHT);
-    else if (dir==0 || dir==1 || dir==2)    y = mod((y - speed)%HEIGHT);
+    if (dir > 3 && dir < 7)                 y = abs((y + speed)%HEIGHT);
+    else if (dir==0 || dir==1 || dir==2)    y = abs((y - speed)%HEIGHT);
     
     energy = energy - speed*speed;
 }
@@ -228,19 +225,22 @@ void animal::geneDisplay() {
     cout<<endl;
 }
 
-//Layout related functions
-void
-plantPositiond ()
+/*//Layout related functions
+void plantPositiond ()
 {
-  for (int j = 0, i = 0; i < HEIGHT; i++)
+  int j = 0, i = 0;
+  for (; i < HEIGHT; i++)
     {
       for (; j < WIDTH; j++)
 	{
-	  cout << plants[i][j];
+	  if(plants[i][j]==0)
+	    cout<<" ";
+	  else
+	    cout<<"p";
 	}
       cout << endl;
     }
-}
+}*/
 
 int main(){
     srand(time(0));
@@ -269,7 +269,7 @@ int main(){
         cout<<animals.size()<<endl;
         updateWorld();
     }
-    plantPositiond();
+    //plantPositiond();
     
     cout<<"test";
     
