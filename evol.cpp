@@ -1,4 +1,4 @@
-/*                          this is the layout of the world
+/*                          this is the layout of the world:
  *      _______________________________________________________________________
  *      |                                                                      |
  *      |                                                          #           |
