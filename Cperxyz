@@ -241,6 +241,7 @@ void plantPositiond ()
     }
 }
 
+//Main function
 int main(){
     srand(time(0));
     
