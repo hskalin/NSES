@@ -117,7 +117,7 @@ animal::animal () {
     
     speed = rand()%4 + 1; 
     
-    for(int i=0; i<8; i++){         //randomly allocates the genes      //may cause difficulty in deciding reference (initial) traits.  
+    for(int i=0; i<8; i++){         //randomly allocates the genes        
         gene[i]=rand()%10;
     }
 }
@@ -164,7 +164,6 @@ void animal::turnAnimal () {
     }
 }
 
-}
 
 void animal::moveAnimal () {
     if (dir > 1 && dir < 5)                 x = abs((x + speed)%WIDTH);     //this thing caused a lot of trouble
@@ -225,22 +224,22 @@ void animal::geneDisplay() {
     cout<<endl;
 }
 
-/*//Layout related functions
+//Layout related functions
 void plantPositiond ()
 {
-  int j = 0, i = 0;
-  for (; i < HEIGHT; i++)
+  int jindex = 0, iindex = 0;
+  for (; iindex < HEIGHT; iindex++)
     {
-      for (; j < WIDTH; j++)
+      for (; jindex < WIDTH; jindex++)
 	{
-	  if(plants[i][j]==0)
-	    cout<<" ";
+	  if(plants[iindex][jindex]==0)
+	    cout<<".";
 	  else
 	    cout<<"p";
 	}
-      cout << endl;
+      cout<<endl;
     }
-}*/
+}
 
 int main(){
     srand(time(0));
@@ -248,28 +247,28 @@ int main(){
     animals.reserve(500);
     animals.emplace_back(animal());         //the initial animal
     
-    /* animals[0].geneDisplay();
-    
-    for(int i=0; i<5; i++){
-         animals.emplace_back(animal());
-         animals[i+1].repAnimal(animals[i]);
-         animals[i+1].geneDisplay();
-    }
-    
-    cout<<animals.size()<<endl;
-    
-    animals.erase(animals.begin() + 2);
-    
-    
-    for(int i=0; i<animals.size(); i++){
-         animals[i].geneDisplay();
-    }*/
-    
+/*     animals[0].geneDisplay();
+ *   
+ *   for(int i=0; i<5; i++){
+ *        animals.emplace_back(animal());
+ *        animals[i+1].repAnimal(animals[i]);
+ *        animals[i+1].geneDisplay();
+ *   }
+ *   
+ *   cout<<animals.size()<<endl;
+ *   
+ *   animals.erase(animals.begin() + 2);
+ *   
+ *   
+ *   for(int i=0; i<animals.size(); i++){
+ *        animals[i].geneDisplay();
+ *   }
+ */   
     for(int i=0; i<1000; i++){
         cout<<animals.size()<<endl;
         updateWorld();
     }
-    //plantPositiond();
+    plantPositiond();
     
     cout<<"test";
     
