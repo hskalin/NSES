@@ -229,6 +229,24 @@ void animal::geneDisplay() {
 }
 
 
+//Layout Related Functions
+void posDisplay()
+{
+         int i,j;
+         for(i=0;i<HEIGHT;i++)
+         {
+                  for(j=0;j<WIDTH;j++)
+                  {
+                           if(plants[i][j]==1)
+                                    cout<<"p";
+                           else
+                                    cout<<"_";
+                  }
+                  cout<<endl;
+         }
+}
+
+
 int main(){
     srand(time(0));
     
@@ -256,6 +274,7 @@ int main(){
         cout<<animals.size()<<endl;
         updateWorld();
     }
+posDisplay();
     
     cout<<"test";
     
