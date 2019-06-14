@@ -239,14 +239,18 @@ void posDisplay()
                   {
                            if(plants[i][j]==1)
                                     cout<<"p ";
-                           else if(plants[i][j]==0)
-                                    cout<<"  ";
-                           else         
+                           else 
+                           {
                                     for(k=0;k<sizeg;k++)
                                     {
                                              if((animals[k].x==j)&&(animals[k].y==i))
                                                       cout<<"a ";
+                                             else 
+                                                      cout<<"  ";
                                     }
+                           }         
+                           
+                           
                   }
                   cout<<endl;
          }
