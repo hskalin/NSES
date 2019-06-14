@@ -61,8 +61,8 @@
 using namespace std;
 
 int plants[HEIGHT][WIDTH];          //this contains the positions of the plants
-int jungle[4] = {45, 10, 10, 10};   //this defines the jungle area
-
+int jungle[4] = {45, 10, 10, 10};    //this defines the jungle area
+int sizeg;
 
 
 
@@ -216,7 +216,7 @@ void updateWorld(){
     }
             
     growPlant();
-    
+    sizeg=size;
 }
     
 
@@ -232,15 +232,20 @@ void animal::geneDisplay() {
 //Layout Related Functions
 void posDisplay()
 {
-         int i,j;
+         int i,j,k;
          for(i=0;i<HEIGHT;i++)
          {
                   for(j=0;j<WIDTH;j++)
                   {
                            if(plants[i][j]==1)
-                                    cout<<"p";
+                                    cout<<"p ";
                            else
-                                    cout<<"_";
+                                    cout<<"_ ";
+                           for(k=0;k<sizeg;k++)
+                           {
+                                    if((animals[k].x==j)&&(animals[k].y==i))
+                                             cout<<"a ";
+                           }
                   }
                   cout<<endl;
          }
