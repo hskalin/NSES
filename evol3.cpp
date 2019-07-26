@@ -57,8 +57,8 @@
 #include <atomic>
 
 
-#define WIDTH           100
-#define HEIGHT          30
+#define WIDTH           168
+#define HEIGHT          35
 #define PLANT_ENERGY    80
 #define REP_ENERGY      200         //energy required for reproduction
 
@@ -267,6 +267,8 @@ void posDisplay()
         }
         cout<<endl;
     }
+    for(i=0; i<WIDTH; i++) cout<<"_";
+    cout<<"\nEnter Command\n";
 }
 
 void fun(){
@@ -354,4 +356,4 @@ int main(){
     
     return 0;
     
-} 
+}  
