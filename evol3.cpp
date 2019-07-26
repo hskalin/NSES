@@ -1,50 +1,3 @@
-/*                          this is the layout of the world
- *      _______________________________________________________________________
- *      |                                                                      |
- *      |                                                          #           |
- *      |                       O                                              |
- *      |                                           #                          |
- *      |                             #                    O                   |
- *      |                                                                      |
- *      |   #         #                                                        |
- *      |                                                              #       |
- *      |                      _______________________                         | 
- *      |                      |                      |                        |
- *      |                      |   #          O     # |                        |
- *      |                      |      #  O            |                        |
- *      |                      |               #   #  |                        |
- *      |                      |   #      #     #     |                        |
- *      |      #               |       O      #    O  |                        |
- *      |                      |______________________|                        |
- *      |                                                          O           |
- *      |                                                                      |
- *      |                                                                      |
- *      |                                                                      |
- *      |                O                      #                              |
- *      |                                                                      |
- *      |                                                     #                |
- *      |                                                                      |
- *      |______________________________________________________________________|
-         100 X 30 UNITS
-         
-        -the middle jungle has more dense vegetation than the rest of the world
-        -currently the animals are represented by 'O' and plants by '#'
-        -the world is continuous. If animal crosses boundary, it will appear on the other side.
-        
-        the direction coding of an animal :
-                    
-                    0   1   2
-                    
-                    7   A   3
-                    
-                    6   5   4
-                    
-        each number corresponds to the direction animal is facing
-        
-        
-        problems :
-        -why the segmentation fault core dumped ?
-*/
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -287,7 +240,7 @@ void fun(){
 
 void run(){
     
-    long gen;
+    long delay=100000;
     thread th1(fun);             //Multithreading !!!!!!!!!!!!
     
     while(1){
@@ -308,7 +261,19 @@ void run(){
             posDisplay();
         }
             
-        usleep(100000);
+            
+        if(command == ','){
+            command =0;
+            delay += 10000;
+        }
+        
+        if(command == '.'){
+            command =0;
+            delay -= 10000;
+            if(delay<0) delay=10000;
+        }
+        
+        usleep(delay);
         system("clear");
         
         if (animals.size()==0){
