@@ -190,6 +190,7 @@ void updateWorld(){
 
 //UI related functions
 void animal::geneDisplay() {
+    cout<<"X:"<<x<<"   Y:"<<y<<"   Dir:"<<dir<<"   Age:"<<age<<"   Speed:"<<speed<<" ";
     cout<<"GENE : ";
     for (int i=0; i<8; i++) cout<<gene[i]<<" ";
     cout<<endl;
@@ -251,6 +252,12 @@ void run(){
         if (command == 'p'){                        //p - pause
             while(command != 's'){                  //s - start
                 if(command == 'x') break;           //x - end program
+                if(command == 'd'){
+                    system("clear");
+                    for(int i=0; i<animals.size(); i++){
+                        animals[i].geneDisplay();
+                    }
+                }
                 usleep(100000);
             }
         }
@@ -322,3 +329,4 @@ int main(){
     return 0;
     
 }  
+ 
