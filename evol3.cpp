@@ -6,14 +6,40 @@
 #include <math.h>
 #include <unistd.h>
 #include <thread>
-#include <ncurses.h>
 #include <atomic>
+#include <random>
 
-
-#define WIDTH           168
+#define WIDTH           165
 #define HEIGHT          35
 #define PLANT_ENERGY    80
 #define REP_ENERGY      200         //energy required for reproduction
+
+
+#ifndef _COLORS_
+#define _COLORS_
+
+/* FOREGROUND */
+#define RST  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+
+#define FRED(x) KRED x RST
+#define FGRN(x) KGRN x RST
+#define FYEL(x) KYEL x RST
+#define FBLU(x) KBLU x RST
+#define FMAG(x) KMAG x RST
+#define FCYN(x) KCYN x RST
+#define FWHT(x) KWHT x RST
+
+#define BOLD(x) "\x1B[1m" x RST
+#define UNDL(x) "\x1B[4m" x RST
+
+#endif  /* _COLORS_ */
 
 //using namespace std;
 
@@ -24,6 +50,7 @@ using std::endl;
 using std::thread;
 
 int plants[HEIGHT][WIDTH];          //this contains the positions of the plants
+int animalPos[HEIGHT][WIDTH];       //"      "           "               animals
 int jungle[4] = {45, 10, 10, 10};    //this defines the jungle area
 int sizeg;
 
@@ -33,6 +60,16 @@ char command;
 std::atomic<bool> terminate(false);
 
 //PLANT RELATED FUNCTIONS
+
+
+int random(int a, int b){
+    std::random_device rdev{};
+    static std::default_random_engine e{rdev()};
+    static std::uniform_int_distribution<int> d{a,b};
+    
+    return d(e);
+}
+
 
 void randomPlant (int left, int top, int width, int height){
     int x,y;
@@ -73,8 +110,10 @@ public:
 };
 
 animal::animal () {
-    x = WIDTH/2;
-    y = HEIGHT/2;
+    //x = WIDTH/2;
+    //y = HEIGHT/2;
+    
+    x=50; y=15;
     age = 0;
     
     dir = 0;
@@ -83,13 +122,21 @@ animal::animal () {
     speed = rand()%4 + 1; 
     
     for(int i=0; i<8; i++){         //randomly allocates the genes      //may cause difficulty in deciding reference (initial) traits.  
-        gene[i]=rand()%10;
+        gene[i]=random(1,10);//abs(rand()%10 + 1);
     }
 }
 
+int max(int a, int b){
+    if(a>b) return a;
+    if(b>a) return b;
+    return 0;
+}
+
 void animal::repAnimal (animal &a) {
-    x = a.x;                        //copies stuff
-    y = a.y;
+
+    
+    x = a.x + 1;                        //copies stuff
+    y = a.y + 1;
     dir = a.dir;
     
     energy = a.energy / 2;          //half energy to parent and child
@@ -99,16 +146,16 @@ void animal::repAnimal (animal &a) {
         gene[i]=a.gene[i];
     }
     
+    
     int geneChng, genePos;
     
                       //randomly chooses gene and in(de)crements by 1
-    genePos = rand() % 8;
-    geneChng = (rand() % 3) - 1;
+    genePos = abs(rand()%8);
+    geneChng = abs((rand()%5)) - 2;
     
     gene[genePos] = abs(gene[genePos] + geneChng);     //cant be negative
-    speed = abs(a.speed + geneChng);
     
-    if(speed == 0) speed = 1;                          //speed cant be zero 
+    if(gene[genePos]==0) gene[genePos] = 1;
 }
 
 
@@ -121,29 +168,26 @@ void animal::turnAnimal () {
         sum += gene[i];
     }
     
-    num = rand()%sum + 1;
+    num = abs(rand()%sum + 1);
     for (int i=0; i<8; i++){
         num = num - gene[i];
         if (num <= 0){
-            dir = i;
+            dir = (dir + i)%8; 
             break;
         }
     }
 }
 
-int mod(int a){
-    if(a>=0) return a;
-    else if(a<0) return (-a);
-}
+
 
 void animal::moveAnimal () {
-    if (dir > 1 && dir < 5)                 x = mod((x + speed)%WIDTH);     //this thing caused a lot of trouble
-    else if (dir==0 || dir==7 || dir==6)    x = mod((x - speed)%WIDTH);
+    if (dir > 1 && dir < 5)            x = abs((x + 1)%WIDTH);     //this thing caused a lot of trouble
+    if (dir==0 || dir==7 || dir==6)    x = abs((x - 1)%WIDTH);
     
-    if (dir > 3 && dir < 7)                 y = mod((y + speed)%HEIGHT);
-    else if (dir==0 || dir==1 || dir==2)    y = mod((y - speed)%HEIGHT);
+    if (dir > 3 && dir < 7)            y = abs((y + 1)%HEIGHT);
+    if (dir==0 || dir==1 || dir==2)    y = abs((y - 1)%HEIGHT);
     
-    energy = energy - speed*speed;
+    energy = energy - 1; 
 }
 
 void animal::eatAnimal () {
@@ -176,12 +220,16 @@ void updateWorld(){
         animals[i].moveAnimal();
         animals[i].eatAnimal();
         animals[i].age++;
+        
+        
         if(animals[i].energy >= REP_ENERGY){
             animals.emplace_back(animal());
             animals[animals.size()-1].repAnimal(animals[i]);
         }
     }
-            
+    
+    
+    
     growPlant();
     sizeg=size;
 }
@@ -190,9 +238,14 @@ void updateWorld(){
 
 //UI related functions
 void animal::geneDisplay() {
-    cout<<"X:"<<x<<"   Y:"<<y<<"   Dir:"<<dir<<"   Age:"<<age<<"   Speed:"<<speed<<" ";
-    cout<<"GENE : ";
-    for (int i=0; i<8; i++) cout<<gene[i]<<" ";
+    cout<<"X:"<<"\033[1;34m"<<x<<"\033[0m";
+    cout<<"     Y:"<<"\033[1;34m"<<y<<"\033[0m";
+    cout<<"     DIR:"<<"\033[1;31m"<<dir<<"\033[0m";
+    cout<<"     ENERGY:"<<"\033[1;31m"<<energy<<"\033[0m";
+    //cout<<"     SPEED:"<<"\033[1;31m"<<x<<"\033[0m";
+    cout<<"     AGE:"<<"\033[1;31m"<<age<<"\033[0m";
+    cout<<"     GENE : ";
+    for (int i=0; i<8; i++) cout<<"\033[1;37m"<<gene[i]<<"\033[0m"<<" ";
     cout<<endl;
 }
 
@@ -205,12 +258,20 @@ void posDisplay()
         for(j=0; j<WIDTH; j++){
             
             flag=1;                                //resetting the flag
-            if(plants[i][j]==1) cout<<"\u2633";
+            if(plants[i][j]==1) cout<<BOLD(FGRN("\u2633"));
             
             else {
                 for(k=0;k<animals.size();k++){
                     if((animals[k].x==j)&&(animals[k].y==i)){
-                        cout<<"\u2688";
+                        if(animals[k].energy < (0.2*REP_ENERGY)){
+                            cout<<FRED("\u2688");
+                        }
+                        else if(animals[k].energy > (0.75*REP_ENERGY)){
+                            cout<<BOLD(FBLU("\u2688"));
+                        }
+                        else{
+                            cout<<BOLD(FWHT("\u2688"));
+                        }
                         flag = 0;
                         break;
                     }
@@ -221,8 +282,8 @@ void posDisplay()
         }
         cout<<endl;
     }
-    for(i=0; i<WIDTH; i++) cout<<"_";
-    cout<<"\nEnter Command\n";
+    for(j=0; j<WIDTH; j++) cout<<"_";
+    cout<<"\nEnter Command \n";
 }
 
 void fun(){
@@ -245,19 +306,17 @@ void run(){
     thread th1(fun);             //Multithreading !!!!!!!!!!!!
     
     while(1){
-        //cout<<animals.size()<<endl;
+        //cout<<animals.size()<<endl;  animalPos[animals[i].y][animals[i].x] = 1;
         updateWorld();
         posDisplay();
         
         if (command == 'p'){                        //p - pause
             while(command != 's'){                  //s - start
-                if(command == 'x') break;           //x - end program
                 if(command == 'd'){
-                    system("clear");
-                    for(int i=0; i<animals.size(); i++){
-                        animals[i].geneDisplay();
-                    }
+                    command = 0;
+                    for(int i=0; i<animals.size(); i++) animals[i].geneDisplay();
                 }
+                if(command == 'x') break;           //x - end program
                 usleep(100000);
             }
         }
@@ -267,19 +326,18 @@ void run(){
             for(int i=0; i<1000; i++){ updateWorld(); }
             posDisplay();
         }
-            
-            
-        if(command == ','){
-            command =0;
+        
+        if (command == '.'){
+            command = 0;
+            delay -= 10000;
+        }
+        
+         if (command == ','){
+            command = 0;
             delay += 10000;
         }
         
-        if(command == '.'){
-            command =0;
-            delay -= 10000;
-            if(delay<0) delay=10000;
-        }
-        
+        if (delay<0) delay = 10000;
         usleep(delay);
         system("clear");
         
@@ -300,7 +358,7 @@ void run(){
 int main(){
     srand(time(0));
     
-    animals.reserve(500);
+    animals.reserve(700);
     animals.emplace_back(animal());         //the initial animal
     
     /* animals[0].geneDisplay();
@@ -324,9 +382,6 @@ int main(){
     
     posDisplay();
     
-    cout<<"test";
-    
     return 0;
     
-}  
- 
+} 
