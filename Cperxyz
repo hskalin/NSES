@@ -403,10 +403,12 @@ stPopulation()
       cout<<"Unable to create";
   else
   {
-      for(int i=0;i<genCount;i++)
+      for(int i=0;i<=genCount;i++)
       {
           a1.store();
+          fout<<a1.generation<<","<<a1.aPopulation<<"'"<<a1.pPopulation<<"\n";
       }
+      fout.close();
   }
 }
 
