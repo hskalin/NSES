@@ -8,7 +8,7 @@
 #include <thread>
 #include <atomic>
 #include <random>
-#include <fstrean>
+#include <fstrean.h>
 #include <unistd.h>
 #include <termios.h>
 
@@ -16,19 +16,6 @@
 #define HEIGHT          35
 #define PLANT_ENERGY    80
 #define REP_ENERGY      200         //energy required for reproduction
-
-class animalVar
-{
-public: int aPopulation, generation, pPopulation;
-        store()
-        {
-            aPopulation=size.animal;
-            generation=genCount;
-            pPopulation=plantCount;
-            
-        }
-}a1;
-
 
 #ifndef _COLORS_
 #define _COLORS_
@@ -393,22 +380,33 @@ void run(){
     th1.join();                           //waits for the thread function to end
 }
 
+class animalVar                           //global class
+{
+public: int aPopulation, generation, pPopulation;
+        void store()
+        {
+            aPopulation=animals.size();
+            generation=genCount;
+            pPopulation=plantCount;
+            
+        }
+}a1;
 
 //storing data related functions
-stPopulation()
+void stPopulation()
 {
-  ofstream fout;
-  fout.open("Population.csv";ios::out)
-  if(!fout)
+  ofstream fun;                                                     //shows error
+  fun.open("Population.csv";ios::out)
+  if(!fun)
       cout<<"Unable to create";
   else
   {
       for(int i=0;i<=genCount;i++)
       {
           a1.store();
-          fout<<a1.generation<<","<<a1.aPopulation<<"'"<<a1.pPopulation<<"\n";
+          fun<<a1.generation<<","<<a1.aPopulation<<"'"<<a1.pPopulation<<"\n";
       }
-      fout.close();
+      fun.close();
   }
 }
 
