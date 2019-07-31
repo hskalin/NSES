@@ -394,20 +394,27 @@ public: int aPopulation, generation, pPopulation;
 
 //storing data related functions
 void stPopulation()
-{
-  ofstream fun;                                                     //shows error
+
+{  
+  int i;
+
+  std::fstream fun;
+
   fun.open("Population.csv";ios::out)
-  if(!fun)
-      cout<<"Unable to create";
-  else
-  {
-      for(int i=0;i<=genCount;i++)
-      {
-          a1.store();
-          fun<<a1.generation<<","<<a1.aPopulation<<"'"<<a1.pPopulation<<"\n";
-      }
-      fun.close();
-  }
+
+  for(i=0;i<=genCount;i++)
+
+    {
+
+       a1.store();
+
+      fun<<a1.generation<<","<<a1.aPopulation<<","<<a1.pPopulation<<"\n";
+
+    }
+
+    fun.close();
+
+  
 }
 
 
