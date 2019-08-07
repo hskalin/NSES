@@ -344,17 +344,17 @@ void stPopulation()
 
   std::fstream fun;
 
-  fun.open("Population.csv",std::ios::out);
+  fun.open("Population.csv",std::ios::app);
 
-  for(i=0;i<=genCount;i++)
+  //for(i=0;i<=genCount;i++)
 
-    {
+   // {
 
        a1.store();
 
       fun<<a1.generation<<","<<a1.aPopulation<<","<<a1.pPopulation<<"\n";
 
-    }
+//    }
 
     fun.close();
 
@@ -371,6 +371,7 @@ void run(){
         updateWorld();
         posDisplay();
         genCount++;
+        stPopulation();
         
         if (command == 'p'){                        //p - pause
             while(command != 's'){                  //s - start
