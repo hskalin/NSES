@@ -324,6 +324,42 @@ void fun(){
 }
 
 
+class animalVar                           //global class
+{
+public: int aPopulation, generation, pPopulation;
+        void store()
+        {
+            aPopulation=animals.size();
+            generation=genCount;
+            pPopulation=plantCount;
+            
+        }
+}a1;
+
+//storing data related functions
+void stPopulation()
+
+{  
+  int i;
+
+  std::fstream fun;
+
+  fun.open("Population.csv",std::ios::out);
+
+  for(i=0;i<=genCount;i++)
+
+    {
+
+       a1.store();
+
+      fun<<a1.generation<<","<<a1.aPopulation<<","<<a1.pPopulation<<"\n";
+
+    }
+
+    fun.close();
+
+  
+}
 
 void run(){
     
@@ -380,42 +416,6 @@ void run(){
     th1.join();                           //waits for the thread function to end
 }
 
-class animalVar                           //global class
-{
-public: int aPopulation, generation, pPopulation;
-        void store()
-        {
-            aPopulation=animals.size();
-            generation=genCount;
-            pPopulation=plantCount;
-            
-        }
-}a1;
-
-//storing data related functions
-void stPopulation()
-
-{  
-  int i;
-
-  std::fstream fun;
-
-  fun.open("Population.csv",std::ios::out);
-
-  for(i=0;i<=genCount;i++)
-
-    {
-
-       a1.store();
-
-      fun<<a1.generation<<","<<a1.aPopulation<<","<<a1.pPopulation<<"\n";
-
-    }
-
-    fun.close();
-
-  
-}
 
 
 int main(){
