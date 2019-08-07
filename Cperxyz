@@ -400,7 +400,7 @@ void stPopulation()
 
   std::fstream fun;
 
-  fun.open("Population.csv";ios::out)
+  fun.open("Population.csv",std::ios::out);
 
   for(i=0;i<=genCount;i++)
 
