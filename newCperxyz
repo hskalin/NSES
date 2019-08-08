@@ -322,6 +322,46 @@ void fun(){
 }
 
 
+//storing data related functions
+void stPopulation()
+
+{  
+
+  std::fstream fun;
+
+  fun.open("Population.csv",std::ios::app);
+
+
+       
+      fun<<genCount<<","<<animals.size()<<","<<plantCount<<"\n";
+
+
+    fun.close();
+
+  
+}
+
+
+
+void stAttributes()            //will store the attributes of the last generation of run (when x is pressed and run() ends)
+
+{  
+  
+  std::fstream fun;
+
+  fun.open("Attributes.csv",std::ios::app);
+
+ 
+    for(int i=0;i<animals.size();i++)
+    {
+      
+       
+       fun<<animals[i].x<<","<<animals[i].y<<","<<animals[i].dir<<","<<animals[i].energy<<","<<animals[i].age<<"\n";
+    }
+
+  fun.close();
+}
+
 
 void run(){
     
