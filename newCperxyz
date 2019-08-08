@@ -282,8 +282,11 @@ void posDisplay()
         for(j=0; j<WIDTH; j++){
             
             flag=1;                                //resetting the flag
-            if(plants[i][j]==1) cout<<BOLD(FGRN("\u2633"));
-            
+            if(plants[i][j]==1) 
+                {
+                cout<<BOLD(FGRN("\u2633"));
+                plantCount++;
+            }
             else {
                 for(k=0;k<animals.size();k++){
                     if((animals[k].x==j)&&(animals[k].y==i)){
