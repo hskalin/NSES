@@ -75,7 +75,7 @@ using std::thread;
 int plants[HEIGHT][WIDTH];          //this contains the positions of the plants
 int animalPos[HEIGHT][WIDTH];       //"      "           "               animals
 int jungle[4] = {45, 10, 10, 10};    //this defines the jungle area
-int sizeg;
+int sizeg,genCount=0,plantCount=0; //genCount saves current generation and plantCount current plant population
 
 int end = 0;
 char command;
