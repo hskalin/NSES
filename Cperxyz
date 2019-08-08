@@ -323,32 +323,6 @@ void fun(){
     }
 }
 
-int globali=0;
-
-class animalVar                           //global class
-{
-public: int aPopulation, generation, pPopulation, aX, aY, aDir, aEnergy, aAge;
-        void storeP()
-        {
-            aPopulation=animals.size();
-            generation=genCount;
-            pPopulation=plantCount;
-            
-        }
-        
-         void storeA()
-        {
-            aX=animals[globali].x;
-            aY=animals[globali].y;
-            aDir=animals[globali].dir;
-            aEnergy=animals[globali].energy;
-            aAge=animals[globali].age;
-            
-        }
-        
-}a1,a2;
-
-
 //storing data related functions
 void stPopulation()
 
@@ -359,9 +333,8 @@ void stPopulation()
   fun.open("Population.csv",std::ios::app);
 
 
-       a1.storeP();
-
-      fun<<a1.generation<<","<<a1.aPopulation<<","<<a1.pPopulation<<"\n";
+       
+      fun<<genCount<<","<<animals.size()<<","<<plantCount<<"\n";
 
 
     fun.close();
@@ -371,7 +344,7 @@ void stPopulation()
 
 
 
-void stAttributes()                                                                       //will store the attributes of the last generation of run (when x is pressed and run() ends)
+void stAttributes()            //will store the attributes of the last generation of run (when x is pressed and run() ends)
 
 {  
   
@@ -380,24 +353,14 @@ void stAttributes()                                                             
   fun.open("Attributes.csv",std::ios::app);
 
  
-
-       a2.storeA();
-
-      fun<<a2.aX<<","<<a2.aY<<","<<a2.aDir<<","<<a2.aEnergy<<","<<a2.aAge<<"\n";
-
-
-
-    fun.close();
-    
     for(int i=0;i<animals.size();i++)
     {
-        globali++;
-        stAttributes();
-        if(i==animals.size())
-            break;
+      
+       
+       fun<<animals[i].x<<","<<animals[i].y<<","<<animals[i].dir<<","<<animals[i].energy<<","<<animals[i].age<<"\n";
     }
 
-  
+  fun.close();
 }
 
 
