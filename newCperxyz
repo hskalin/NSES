@@ -372,6 +372,8 @@ void run(){
         //cout<<animals.size()<<endl;  animalPos[animals[i].y][animals[i].x] = 1;
         updateWorld();
         posDisplay();
+        genCount++;
+        stPopulation();
         
         if (command == 'p'){                        //p - pause
             while(command != 's'){                  //s - start
@@ -379,10 +381,15 @@ void run(){
                     command = 0;
                     for(int i=0; i<animals.size(); i++) animals[i].geneDisplay();
                 }
+                if (command == 'u'){                        //if you press u, it will store current attributes
+                    command = 0;
+                    stAttributes();
+                }  
                 if(command == 'x') break;           //x - end program
                 usleep(100000);
             }
         }
+
         
         if (command == 'g'){                        //if you press g, it will increment by 1000 generatons
             command = 0;
