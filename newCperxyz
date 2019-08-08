@@ -9,7 +9,7 @@
 #include <atomic>
 #include <random>
 #include <fstream>
-
+#include <sstream>
 #include <unistd.h>
 #include <termios.h>
 
@@ -351,9 +351,12 @@ void stAttributes()            //will store the attributes of the last generatio
 
 {  
   
+    std::ostringstream fn;
+     fn<<"Attributes: "<<genCount<<" .csv";            
+    std::string var = fn.str();
   std::fstream fun;
 
-  fun.open("Attributes.csv",std::ios::app);
+  fun.open(var,std::ios::app);
 
  
     for(int i=0;i<animals.size();i++)
