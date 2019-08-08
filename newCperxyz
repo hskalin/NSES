@@ -8,6 +8,7 @@
 #include <thread>
 #include <atomic>
 #include <random>
+#include <fstream.h>
 
 #include <unistd.h>
 #include <termios.h>
