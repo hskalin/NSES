@@ -381,6 +381,7 @@ void run(){
         posDisplay();
         genCount++;
         stPopulation();
+        plantCount=0;
         
         if (command == 'p'){                        //p - pause
             while(command != 's'){                  //s - start
