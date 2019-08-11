@@ -247,7 +247,7 @@ void animal::moveAnimal () {
     if (dir > 3 && dir < 7)            y = abs((y + 1)%HEIGHT);
     if (dir==0 || dir==1 || dir==2)    y = abs((y - 1)%HEIGHT);
     
-    energy = energy - 1; 
+    energy = energy - 4; 
 }
 
 void animal::eatAnimal () {
