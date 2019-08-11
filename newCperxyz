@@ -122,12 +122,14 @@ void growPlant () {
 
 class animal{
 public:
-    int x, y, dir, energy, age, speed;      //dir is the direction currently facing
+    int x, y, dir, energy, age, speed, vision;      //dir is the direction currently facing
     int gene[8];
     void moveAnimal ();
     void eatAnimal ();
     void turnAnimal ();
     void repAnimal (animal &a);
+    void animalVision ();
+    void visionChange ();
     void geneDisplay ();
     animal();                       //default constructor
     //animal(animal &a);              //copy constructor
@@ -139,13 +141,13 @@ animal::animal () {
     
     x=50; y=15;
     age = 0;
-    
+    vision = 1;                      //increases from 1 to 8
     dir = 0;
     energy = 1000;
     
     speed = rand()%4 + 1; 
     
-    for(int i=0; i<8; i++){         //randomly allocates the genes      //may cause difficulty in deciding reference (initial) traits.  
+    for(int i=0; i<8; i++){         //randomly allocates the genes      
         gene[i]=random(1,10);//abs(rand()%10 + 1);
     }
 }
@@ -181,6 +183,40 @@ void animal::repAnimal (animal &a) {
     
     if(gene[genePos]==0) gene[genePos] = 1;
 }
+
+void animal::animalVision()
+{  
+    int fav[8]={0,0,0,0,0,0,0,0};
+   for(int i=1; i<(vision+3); i++)                             //checks for plants and changes genes accordingly
+   {
+       if(plants[y-i][x-i]==1)
+        fav[0]++;
+       if(plants[y-i][x]==1)
+        fav[1]++;
+       if(plants[y-i][x+i]==1)
+        fav[2]++;       
+       if(plants[y][x+i]==1)
+        fav[3]++;
+      if(plants[y+i][x+i]==1)
+        fav[4]++;
+       if(plants[y+i][x]==1)
+        fav[5]++;
+       if(plants[y+i][x-i]==1)
+        fav[6]++;       
+      if(plants[y][x-i]==1) 
+          fav[7]++;
+   }
+   for(int j=0; j<8; j++)
+   {
+       gene[j]+=fav[j]; 
+   }
+}
+
+void animal::visionChange()
+{  
+  
+}
+
 
 
 
@@ -222,6 +258,7 @@ void animal::eatAnimal () {
 }
 
 
+ 
 
 //WORLD RELATED FUNCTIONS
 vector<animal> animals;                 //make a vector animal
@@ -243,6 +280,7 @@ void updateWorld(){
         animals[i].turnAnimal();
         animals[i].moveAnimal();
         animals[i].eatAnimal();
+        //animals[i].animalVision();
         animals[i].age++;
         
         
@@ -266,6 +304,7 @@ void animal::geneDisplay() {
     cout<<"     Y:"<<"\033[1;34m"<<y<<"\033[0m";
     cout<<"     DIR:"<<"\033[1;31m"<<dir<<"\033[0m";
     cout<<"     ENERGY:"<<"\033[1;31m"<<energy<<"\033[0m";
+    cout<<"     VISION:"<<"\033[1;31m"<<vision<<"\033[0m";
     //cout<<"     SPEED:"<<"\033[1;31m"<<x<<"\033[0m";
     cout<<"     AGE:"<<"\033[1;31m"<<age<<"\033[0m";
     cout<<"     GENE : ";
@@ -363,7 +402,7 @@ void stAttributes()            //will store the attributes of the last generatio
     {
       
        
-       fun<<animals[i].x<<","<<animals[i].y<<","<<animals[i].dir<<","<<animals[i].energy<<","<<animals[i].age<<"\n";
+       fun<<animals[i].x<<","<<animals[i].y<<","<<animals[i].dir<<","<<animals[i].energy<<","<<animals[i].vision<<","<<animals[i].age<<","<<","<<animals[i].gene[0]<<","<<animals[i].gene[1]<<","<<animals[i].gene[2]<<","<<animals[i].gene[3]<<","<<animals[i].gene[4]<<","<<animals[i].gene[5]<<","<<animals[i].gene[6]<<","<<animals[i].gene[7]<<"\n";
     }
 
   fun.close();
@@ -465,3 +504,4 @@ int main(){
     
 } 
 
+ 
