@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +10,7 @@
 #include <random>
 #include <fstream>
 #include <locale>
+#include <drawille.h>
 #include <sstream>
 #include <unistd.h>
 #include <termios.h>
@@ -18,7 +18,7 @@
 
 
 void graphPopulation();
-//drawille
+/*//drawille
 #ifndef DRAWILLE_HPP
 #define DRAWILLE_HPP
 
@@ -71,7 +71,7 @@ namespace Drawille {
 }
 
 #endif
-
+*/
 
 #define WIDTH           165
 #define HEIGHT          35
@@ -140,6 +140,8 @@ int plants[HEIGHT][WIDTH];          //this contains the positions of the plants
 int animalPos[HEIGHT][WIDTH];       //"      "           "               animals
 int jungle[4] = {45, 10, 10, 10};    //this defines the jungle area
 int sizeg,genCount=0,plantCount=0; //genCount saves current generation and plantCount current plant population
+std::vector<int>x;
+std::vector<int>y;
 
 int end = 0;
 char command;
@@ -147,37 +149,81 @@ char command;
 std::atomic<bool> terminate(false);
 
 
-void Graph(float x,float y)
+void Graph()
 {
     locale::global(locale(""));
   Canvas canvas(80, 24);
 
-  //for(int i = 0; i <= 50; ++i) {
-    canvas.set(x, y);
-  //}
+  for(int i = 0; i <= 10; ++i) {
+    canvas.set(i, i);
+  }
 
   canvas.draw(wcout);
  
 }
 void graphPopulation()
 {
-  char ch[100]; 
-  int x,y,g,i=0;
+  int g,i=0,count=0,qwerty=111;
+  //locale::global(locale(""));
+  //Canvas canvas(80, 24);
   std::fstream fin;
-  if(!fin);
-     cout<<"Unable to open"<<endl;
+  fin.open("Population.csv",std::ios::in);
+   std::vector<std::string> row; 
+    std::string line, word, temp; 
+  
+    while (fin >> temp) { 
+  
+        row.clear(); 
+        //i++;  
+        // read an entire row and 
+        // store it in a string variable 'line' 
+        //getline(fin, line); 
+       // cout<<endl<<temp<<"test";
+        // used for breaking words 
+        std::stringstream s(temp); 
+  
+        // read every column data of a row and 
+        // store it in a string variable, 'word' 
+       while (getline(s, word, ',')) { 
+            //count++;  
+            // add all the column data 
+            // of a row to a vector 
+            row.push_back(word); 
+            //if(count==2)
+              //  break;
+        }
+        x.emplace_back(stoi(row[1]));
+        y.emplace_back(stoi(row[0]));
+        
+        
+        //cout<<x<<" "<<y<<endl;
+        //canvas.set(x, y);
+        /*if(i==genCount)
+        {
+        cout<<i;
+          break;
+        } */
+        
+        
+    }
+    
+//canvas.draw(wcout);  
+  //if(!fin)
+  /*   cout<<"Unable to open"<<endl;
   else
-  {for(;i<10;i++)
-  //fin.open("Population.csv",std::ios::in);
- // while(!fin.eof())
-  //{
-      //i++;  
-      //fin.get(ch,100,',')
-       //(i%2!=0)?(x=stoi(ch)):(y=stoi(ch));
-       //if(i%2==0)
-           Graph(x,y);
-  //}
+  {
+      for(;i<10;i++)
+  
+  while(!fin.eof())
+  {
+      i++;  
+      fin.get(ch,100,',')
+      (i%2!=0)?(x=stoi(ch)):(y=stoi(ch));
+      if(i%2==0)
+        Graph(x,y);
   }
+  }*/
+  cout<<"Ready to graph "<<qwerty<<endl;
 }
 //PLANT RELATED FUNCTIONS
 
@@ -532,6 +578,10 @@ void run(){
                     command = 0;
                     graphPopulation();
                 }
+                 if (command == 'q'){                        //if you press q, it will test drawille
+                    command = 0;
+                    Graph();
+                }
                 if(command == 'x') break;           //x - end program
                 usleep(100000);
             }
@@ -604,7 +654,7 @@ int main(){
     
     return 0;
     
-} 
-
+}  
+ 
  
  
