@@ -529,12 +529,14 @@ void run(){
 		}
                 if(command == 'x') break;           //x - end program
                 usleep(100000);
-                 if (command == 'm'){                        //if you press m, it will clear a random species or a random area
+                  if (command == 'm'){                        //if you press m, it will clear a random area
             command = 0;
-            if(rand()%2==0)
-                clearAr();      
-            if(rand()%2==1)
-                clearSp();                
+            clearAr();
+                 }
+            if (command == 'n'){                        //if you press m, it will clear a random species
+            command = 0;
+            clearSp();
+                 }             
         }
             }
         }
