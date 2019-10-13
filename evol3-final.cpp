@@ -312,7 +312,7 @@ void updateWorld(){
     sizeg=size;
     index.genCount++;
     index.animalCount = animals.size();
-	
+}	
 void clearAr()
 {
   int xl = (rand() % (WIDTH)), yl = (rand() % (HEIGHT)), j, k ;                            //= (rand() % (upper – lower + 1)) + lower
@@ -339,7 +339,7 @@ void clearSp()
         }
     }
 }
-}
+
     
 
 
