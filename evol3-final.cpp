@@ -312,6 +312,22 @@ void updateWorld(){
     sizeg=size;
     index.genCount++;
     index.animalCount = animals.size();
+	
+void clearAr()
+{
+    
+}
+
+void clearSp()
+{
+    int x = (rand() % 4) ;                            //= (rand() % (upper – lower + 1)) + lower
+    for(auto i=animals.begin(); i != animals.end(); ++i) {
+        if ((i->specie) == x) {
+            animals.erase(i);
+            i--;
+        }
+    }
+}
 }
     
 
@@ -502,6 +518,13 @@ void run(){
 		}
                 if(command == 'x') break;           //x - end program
                 usleep(100000);
+	        if (command == 'm'){                        //if you press m, it will clear a random species or a random area
+            	        command = 0;
+                        //if(random(0,1)==0)
+                        //  clearAr();      
+                        //if(random(0,1)==1)
+                            clearSp();                
+        }
             }
         }
         
