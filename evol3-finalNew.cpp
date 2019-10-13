@@ -317,15 +317,15 @@ void updateWorld(){
 void clearAr()
 {
      int xl = (rand() % (WIDTH*3/4)), yl = (rand() % (HEIGHT*3/4)), j, k, newPlantp=0 ;                            //= (rand() % (upper – lower + 1)) + lower
-    /*for(auto i=animals.begin(); i != animals.end(); ++i) {
-        if ((xl <= (i->x) <= (xl+10))&&(yl <= (i->y) <= (yl+10))) {
+    for(auto i=animals.begin(); i != animals.end(); ++i) {
+        if ((xl <= (i->x))&&( (i->x) <= (xl+10))&&(yl <= (i->y))&&( (i->y) <= (yl+10))) {
             animals.erase(i);
             i--;
         }
         
-    }*/
+    }
         
-    for(j=xl;j<xl+10;j++)                                                                  //sometimes causes segmentation faults
+    for(j=xl;j<xl+10;j++)                                                                  
     {
         for(k=yl;k<yl+10;k++)
            plants[k][j]=0;    
@@ -338,7 +338,7 @@ void clearAr()
 		    newPlantp++;
 	    }
     }
-    cout<<"xl = "<<xl<<" | yl = "<<yl<<" | New Plant population = "<<newPlantp<<endl;
+    cout<<"xl = "<<xl<<" | yl = "<<yl<<" | New Plant population = "<<newPlantp<<" | New Animal population = "<<animals.size()<<endl;
 }
 
 void clearSp()
