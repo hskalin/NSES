@@ -422,7 +422,7 @@ void posDisplay()
                                        
                                        
                                        
-                                            else if(dmode == 's'){
+                                            else if((dmode == 's')||(dmode == 'a')){
                                             if(animals[k].specie == 0){
                                                             cout<<FRED("\u2688");
                                                         }
@@ -440,11 +440,7 @@ void posDisplay()
                                         
                                         
                                                 else if(dmode == 'p')
-                                                    cout<<" ";
-                                                
-                                                 else if(dmode == 'a')
-                                                    cout<<BOLD(FWHT("\u2688"));
-                                               
+                                                    cout<<" ";                                        
                                         
                                         
                                                         flag = 0;
