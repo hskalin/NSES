@@ -380,7 +380,7 @@ void posDisplay()
                         }
 			    }
 
-			    else{
+			  else if(dmode == 's'){
 			if(animals[k].specie == 0){
                             cout<<FRED("\u2688");
                         }
@@ -394,6 +394,8 @@ void posDisplay()
                             cout<<BOLD(FYEL("\u2688"));
                         }
 			    }
+			    else if(dmode == 'p')
+                    cout<<" ";
                         flag = 0;
                         break;
                     }
@@ -550,6 +552,10 @@ void run(){
          if (command == '2'){
             command = 0;
             dmode = 's';
+        }
+	   if (command == '3'){
+            command = 0;
+            dmode = 'p';
         }
         
 
