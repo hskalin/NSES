@@ -316,18 +316,29 @@ void updateWorld(){
     
 void clearAr()
 {
-    int xl = (rand() % (WIDTH*3/4))+(WIDTH*3/8), yl = (rand() % (HEIGHT*3/4))+(HEIGHT*3/8), j, k ;                            //= (rand() % (upper – lower + 1)) + lower
+     int xl = (rand() % (WIDTH*3/4)), yl = (rand() % (HEIGHT*3/4)), j, k, newPlantp=0 ;                            //= (rand() % (upper – lower + 1)) + lower
     /*for(auto i=animals.begin(); i != animals.end(); ++i) {
         if ((xl <= (i->x) <= (xl+10))&&(yl <= (i->y) <= (yl+10))) {
             animals.erase(i);
             i--;
         }
+        
     }*/
+        
     for(j=xl;j<xl+10;j++)                                                                  //sometimes causes segmentation faults
     {
         for(k=yl;k<yl+10;k++)
            plants[k][j]=0;    
-    }        
+    }
+    
+    for(j=0; j<HEIGHT; j++) {
+        for(k=0; k<WIDTH; k++){
+            
+            if(plants[j][k]==1)
+		    newPlantp++;
+	    }
+    }
+    cout<<"xl = "<<xl<<" | yl = "<<yl<<" | New Plant population = "<<newPlantp<<endl;
 }
 
 void clearSp()
@@ -338,6 +349,18 @@ void clearSp()
             animals.erase(i);
             i--;
         }
+    }
+    cout<<"Removed species: ";
+    switch(x)
+    {
+        case 0 : cout<<"red (0)"<<endl;
+                break;
+        case 1 : cout<<"blue (1)"<<endl;
+                break;
+        case 2 : cout<<"white (2)"<<endl;
+                break;
+        case 3 : cout<<"yellow (3)"<<endl;
+                break;
     }
 }
 
