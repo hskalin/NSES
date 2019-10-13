@@ -385,62 +385,90 @@ char dmode = 'e';
 //Layout Related Functions
 void posDisplay()
 {
-    index.plantCount=0;
+   index.plantCount=0;
     int i,j,k,flag=1;
+    
     for(i=0; i<HEIGHT; i++) {
         for(j=0; j<WIDTH; j++){
             
-            flag=1;                                //resetting the flag
-            if(plants[i][j]==1){
-		    cout<<BOLD(FGRN("\u2633"));
-		    index.plantCount++;
-	    }
+                                    flag=1;                                //resetting the flag
+                                    if((plants[i][j]==1)){
+                                    if(dmode!='a') cout<<BOLD(FGRN("\u2633"));
+                                    else if(dmode ='a') cout<<" ";
+                                    index.plantCount++;
+                                }
+	      
             
-            else {
-                for(k=0;k<animals.size();k++){
-                    if((animals[k].x==j)&&(animals[k].y==i)){
-			    if(dmode == 'e'){
+                                    else {
+                                        for(k=0;k<animals.size();k++){
+                                            if((animals[k].x==j)&&(animals[k].y==i)){
+                                        
+                                                
+                                                
+                                                if(dmode == 'e'){
 			    
-                        if(animals[k].energy < (0.2*REP_ENERGY)){
-                            cout<<FRED("\u2688");
-                        }
-                        else if(animals[k].energy > (0.75*REP_ENERGY)){
-                            cout<<BOLD(FBLU("\u2688"));
-                        }
-                        else{
-                            cout<<BOLD(FWHT("\u2688"));
-                        }
-			    }
+                                                        if(animals[k].energy < (0.2*REP_ENERGY)){
+                                                            cout<<FRED("\u2688");
+                                                        }
+                                                        else if(animals[k].energy > (0.75*REP_ENERGY)){
+                                                            cout<<BOLD(FBLU("\u2688"));
+                                                        }
+                                                        else{
+                                                            cout<<BOLD(FWHT("\u2688"));
+                                                        }
+                                                }
 
-			    else if(dmode == 's'){
-			if(animals[k].specie == 0){
-                            cout<<FRED("\u2688");
-                        }
-                        else if(animals[k].specie == 1){
-                            cout<<BOLD(FBLU("\u2688"));
-                        }
-			else if(animals[k].specie == 2){
-				cout<<BOLD(FWHT("\u2688"));
-			}
-                        else{
-                            cout<<BOLD(FYEL("\u2688"));
-                        }
-			    }
-			    else if(dmode == 'p')
-                    cout<<" ";
-                        flag = 0;
-                        break;
-                    }
-                }
+                                       
+                                       
+                                       
+                                       
+                                            else if(dmode == 's'){
+                                            if(animals[k].specie == 0){
+                                                            cout<<FRED("\u2688");
+                                                        }
+                                                        else if(animals[k].specie == 1){
+                                                            cout<<BOLD(FBLU("\u2688"));
+                                                        }
+                                            else if(animals[k].specie == 2){
+                                                cout<<BOLD(FWHT("\u2688"));
+                                            }
+                                                else{
+                                                            cout<<BOLD(FYEL("\u2688"));
+                                                        }
+                                                }       
+                                        
+                                        
+                                        
+                                                else if(dmode == 'p')
+                                                    cout<<" ";
+                                                
+                                                 else if(dmode == 'a')
+                                                    cout<<BOLD(FWHT("\u2688"));
+                                               
+                                        
+                                        
+                                                        flag = 0;
+                                                        break;
+                                                    }
+                                        }
                 
-            if(flag) cout<<" ";
-            }         
+                                    if(flag) cout<<" ";
+                                    }  
+            
+                                   /* if(dmode=='a'){
+                                    for(j=0; j<HEIGHT; j++) {
+                                            for(k=0; k<WIDTH; k++){
+            
+                                                if(plants[j][k]==1)
+                                                index.plantCount++;
+                                            }
+                                        }
+                                    }*/
         }
         cout<<endl;
     }
     for(j=0; j<WIDTH; j++) cout<<"_";
-    cout<<"\n"<<BOLD(FBLU("Generation:"))<<index.genCount<<BOLD(FBLU("   |   Animal population:"))<<index.animalCount<<BOLD(FBLU("  |  Plant population:"))<<index.plantCount<<BOLD(FBLU("  |  Species Detected:"))<<species<<endl;
-}
+    cout<<"\n"<<BOLD(FBLU("Generation:"))<<index.genCount<<BOLD(FBLU("   |   Animal population:"))<<index.animalCount<<BOLD(FBLU("  |  Plant population:"))<<index.plantCount<<BOLD(FBLU("  |  Species Detected:"))<<species<<endl;}
 
 void fun(){
     
@@ -591,6 +619,10 @@ void run(){
          if (command == '3'){
             command = 0;
             dmode = 'p';
+        }
+	  if (command == '4'){
+            command = 0;
+            dmode = 'a';
         }
         
 
