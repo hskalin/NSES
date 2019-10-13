@@ -539,7 +539,6 @@ void run(){
                  }             
         }
             }
-        }
         
         if (command == 'g'){                        //if you press g, it will increment by 1000 generatons
             command = 0;
