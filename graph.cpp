@@ -19,7 +19,7 @@ namespace Drawille {
     {0x01, 0x08},
     {0x02, 0x10},
     {0x04, 0x20},
-    {0x40, 0x80}
+    {0x40, 0x80},
   };
 
   constexpr wchar_t braille = 0x2800;
@@ -32,7 +32,7 @@ namespace Drawille {
         v.resize(width);
     }
 
-    void set(size_t x, size_t y) {
+    void set(size_t x, size_t y, int clr) {
       if(x > (this->canvas[0].size() * 2) or x < 1) x = 0;
       if(y > (this->canvas.size() * 4) or y < 1)    y = 0;
       this->canvas[y / 4][x / 2] |= pixmap[y % 4][x % 2];
@@ -48,7 +48,8 @@ namespace Drawille {
       for(auto& v: this->canvas) {
         for(auto& c: v) {
           if(c == 0) strm << " ";
-          else strm << std::wstring{braille+c};
+//	  else if(1 == 0) strm << std::wstring{braille+c};
+          else strm<<std::wstring{braille+c};
         }
         strm << std::endl;
       }
@@ -83,7 +84,7 @@ class counter{
 	int animalCount;
 };
 
-vector<counter> cntr;
+vector<counter> cntr1, cntr;
 
 /*
 void parseCSV(){
@@ -115,14 +116,23 @@ void inputPopulation(){
 	int pos=0;
 
 	ifstream fin("./population/population.dat", ios::binary);
-	cntr.emplace_back(counter());
+	cntr1.emplace_back(counter());
 
-	while(fin.read((char*)&cntr[pos], sizeof(cntr[pos]))){
-		cntr.emplace_back(counter());
-		pos = cntr.size()-1;
+	while(fin.read((char*)&cntr1[pos], sizeof(cntr1[pos]))){
+		cntr1.emplace_back(counter());
+		pos = cntr1.size()-1;
 	}
 
 	fin.close();
+
+	if(cntr1.size()<3000) pos=0;
+	else pos = cntr1.size() - 3000;
+
+//	cntr.emplace_back(counter());
+	for(int i=pos; i<cntr1.size(); i++){
+		cntr.emplace_back(counter());
+		cntr[cntr.size()-1] = cntr1[i];
+	}
 }
 
 int main(){
@@ -145,11 +155,11 @@ int main(){
   	Canvas canvas(165, 42);
 
   	for(int i = 0; i <= cntr.size(); i++) {
-    		canvas.set(i/9,160-cntr[i].animalCount/3);
+    		canvas.set(i/9,160-cntr[i].animalCount/3,0);
   	}	
         
   	for(int i = 0; i <= cntr.size(); i++) {
-    		canvas.set(i/9,160-cntr[i].plantCount/3);
+    		canvas.set(i/9,160-cntr[i].plantCount/3,1);
   	}	
 
   	canvas.draw(wcout);
