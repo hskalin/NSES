@@ -115,7 +115,7 @@ void parseCSV(){
 void inputPopulation(){
 	int pos=0;
 
-	ifstream fin("./population/population.dat", ios::binary);
+	ifstream fin("population.dat", ios::binary);
 	cntr1.emplace_back(counter());
 
 	while(fin.read((char*)&cntr1[pos], sizeof(cntr1[pos]))){
