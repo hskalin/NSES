@@ -465,7 +465,7 @@ std::string dateTime(){
 
 */
 void outputPopulation(){
-	std::ofstream fout("./population/population.dat", std::ios::binary|std::ios::app);
+	std::ofstream fout("population.dat", std::ios::binary|std::ios::app);
 	fout.write((char*)&index, sizeof(index));
 	fout.close();
 }
@@ -516,7 +516,7 @@ void run(){
         //cout<<animals.size()<<endl;  animalPos[animals[i].y][animals[i].x] = 1;
         updateWorld();
         posDisplay();
-//	outputPopulation();
+	outputPopulation();
 //	outputPopulationCSV();
         
         if (command == 'p'){                        //p - pause
