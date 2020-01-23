@@ -555,14 +555,13 @@ void outputLog(){
 void run(){
     
     long delay=100000;
-    thread th1(fun);             //Multithreading !!!!!!!!!!!!
+    thread th1(fun);             
     
     while(1){
         //cout<<animals.size()<<endl;  animalPos[animals[i].y][animals[i].x] = 1;
         updateWorld();
         posDisplay();
-//	outputPopulation();
-//	outputPopulationCSV();
+	outputPopulation();
         
         if (command == 'p'){                        //p - pause
             while(command != 's'){                  //s - start
