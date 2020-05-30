@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <string.h>
-#include <sstream>
 #include <locale>
 
 //here i have included the drawille-cpp file in the code for portability
@@ -94,7 +92,7 @@ void inputPopulation(){
 	where index is a data memeber of the counter class*/
 	
 	ifstream fin("population.dat", ios::binary);
-	cntr1.emplace_back(counter());
+	cntrTemp.emplace_back(counter());
 
 	while(fin.read((char*)&cntrTemp[pos], sizeof(cntrTemp[pos]))){
 		cntrTemp.emplace_back(counter());
