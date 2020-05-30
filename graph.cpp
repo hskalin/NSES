@@ -5,6 +5,9 @@
 #include <sstream>
 #include <locale>
 
+//here i have included the drawille-cpp file in the code for portability
+//https://github.com/ix/drawille-plusplus
+
 #ifndef DRAWILLE_HPP
 #define DRAWILLE_HPP
 
@@ -61,77 +64,55 @@ namespace Drawille {
 }
 
 #endif
+//drawille.hpp end
+
 
 using namespace std;
 using namespace Drawille;
 using std::wcout;
 using std::locale;
 
-
-/*int endp(char ch[20]){
-	strrev(ch);
-	if(ch[0]=='p') return 1;
-	return 0;
-}*/
-
-//vector<string> ani, plant;
-
 //INDEX
 class counter{
 	public:
 	int plantCount;
-	int genCount;
+	int genCount;		//this is not used in this program
 	int animalCount;
 };
 
-vector<counter> cntr1, cntr;
+vector<counter> cntrTemp, cntr;
 
-/*
-void parseCSV(){
-	fstream fin;
-	fin.open("population.csv", ios::in);
-
-	//int colnum = 2000;
-
-	vector<string> row;
-	string line, word, temp;
-
-	while (fin >> temp) {
-		row.clear();
-		getline(fin, line);
-
-		stringstream s(line);
-
-		while ( getline(s, word, ',') ){
-			row.push_back(word);
-		}
-		
-		ani.emplace_back((row[0]));
-		plant.emplace_back((row[1]));
-	}
-}
-*/
 
 void inputPopulation(){
 	int pos=0;
 
+	/*The population.dat file was made using
+	
+		std::ofstream fout("./population/population.dat", std::ios::binary|std::ios::app);
+		fout.write((char*)&index, sizeof(index));
+	
+	where index is a data memeber of the counter class*/
+	
 	ifstream fin("population.dat", ios::binary);
 	cntr1.emplace_back(counter());
 
-	while(fin.read((char*)&cntr1[pos], sizeof(cntr1[pos]))){
-		cntr1.emplace_back(counter());
-		pos = cntr1.size()-1;
+	while(fin.read((char*)&cntrTemp[pos], sizeof(cntrTemp[pos]))){
+		cntrTemp.emplace_back(counter());
+		pos = cntrTemp.size()-1;
 	}
 
 	fin.close();
 
-	if(cntr1.size()<3000) pos=0;
-	else pos = cntr1.size() - 3000;
-
-//	cntr.emplace_back(counter());
-	for(int i=pos; i<cntr1.size(); i++){
+	//initializing pos such that only the last 3000 points will be 
+	//entered into cntr
+	if(cntrTemp.size()<3000) pos=0;
+	else pos = cntrTemp.size() - 3000;
+	
+	//initialising cntr with last 3000 values. i am using 3000 as a limit
+	//because that is how many will fit on my monitor
+	for(int i=pos; i<cntrTemp.size(); i++){
 		cntr.emplace_back(counter());
-		cntr[cntr.size()-1] = cntr1[i];
+		cntr[cntr.size()-1] = cntrTemp[i];
 	}
 }
 
@@ -139,27 +120,26 @@ int main(){
 
 	inputPopulation();
 
-/*        for(int i=0; i<600; i++){
-		parseCSV();
-	}
-
-	for(int i=0; i<100; i++){
-		cout<<stoi(plant[i])<<" ";
-	}
-*/
-//	cout<<5+stoi(ani[0]);
-//	cout<<endl;                         //this was causing problem
-
-
 	locale::global(locale(""));
   	Canvas canvas(165, 42);
 
   	for(int i = 0; i <= cntr.size(); i++) {
-    		canvas.set(i/9,160-cntr[i].animalCount/3,0);
+		
+		/*to fill in the points, the syntax is canvas.set(x,y) where 
+		x and y are the coordinates of the points.
+		however as it measures the y axis distance from upper left corner
+		instead of lower left corner, we instead write canvas.set(x,y_max-y)
+		where y_max is the max limit of the y axis (in characters)
+		
+		for scaling the output you can multiply or divide by any number
+		division will compress the graph and multiplication will stretch it
+		*/
+		
+    		canvas.set(i/9,160-cntr[i].animalCount/3); 	
   	}	
         
   	for(int i = 0; i <= cntr.size(); i++) {
-    		canvas.set(i/9,160-cntr[i].plantCount/3,1);
+    		canvas.set(i/9,160-cntr[i].plantCount/3);
   	}	
 
   	canvas.draw(wcout);
