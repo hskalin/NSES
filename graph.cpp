@@ -133,11 +133,11 @@ int main(){
 		division will compress the graph and multiplication will stretch it
 		*/
 		
-    		canvas.set(i/9,160-cntr[i].animalCount/3); 	
+    		canvas.set(i/9,160-cntr[i].animalCount/3,0); 	
   	}	
         
   	for(int i = 0; i <= cntr.size(); i++) {
-    		canvas.set(i/9,160-cntr[i].plantCount/3);
+    		canvas.set(i/9,160-cntr[i].plantCount/3,1);
   	}	
 
   	canvas.draw(wcout);
