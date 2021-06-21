@@ -51,11 +51,14 @@ Each animal has a set of eight numbers associated with it called its 'gene'. The
         
 The animals reproduce by binary fission if they have a certain amount of energy. The genes are exactly copied but a small amount of mutation can occur which allows for evolution. The animals with most suitable genes survive.
 
-## Compiling
+## Compiling and running
 The program can be compiled using
     
     g++ nses.cpp -o nses -pthread -std=c++11
     
+The graph.cpp program can be used to draw live time graphs while the program is running. Compile it and run after the nses program starts running using the following command 
+  
+    watch -n 0.2 ./graph
     
 ## Commands
 program commands 
